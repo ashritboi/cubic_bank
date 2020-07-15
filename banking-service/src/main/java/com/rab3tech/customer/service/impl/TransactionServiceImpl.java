@@ -1,6 +1,8 @@
 package com.rab3tech.customer.service.impl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,5 +98,25 @@ public class TransactionServiceImpl implements TransactionService{
 	message = "Fund Transfer successful";
 	
 			return message;
+	}
+
+	@Override
+	public List<TransactionVO> getAllTransactions(String userId) {
+		List<TransactionVO> transactions = new ArrayList<TransactionVO>();
+		
+		Customer customer = customerRepository.findByEmail(userId).get();
+		Optional<CustomerAccountInfo>account = accountRepository.findAccountByEmail(customer.getLogin());
+		CustomerAccountInfo debitAccount = account.get();
+		List<Transaction> transactionData = transactionRepository.getAllTransactions(debitAccount.getAccountNumber());
+		for(Transaction transaction :transactionData){
+		 	TransactionVO transactionVO = new TransactionVO();
+		 	if(transaction.getDebitAccountNumber().equals(debitAccount.getAccountNumber())){
+		 		transactionVO.setTransactionType("Debit");
+		 	}else{
+		 		transactionVO.setTransactionType("Credit");
+		 	}
+		 	transactions.add(transactionVO);
+		}
+		return transactions;
 	}
 }

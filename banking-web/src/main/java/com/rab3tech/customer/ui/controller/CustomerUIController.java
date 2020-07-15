@@ -320,6 +320,21 @@ public class CustomerUIController {
 			return "customer/login"; 
 		}
 	}
+	
+	@GetMapping("/customer/account/getStatement")
+	public String getStatement(Model model, HttpSession session) {
+		LoginVO loginVO2 = (LoginVO)session.getAttribute("userSessionVO");
+		if(loginVO2 != null){
+			String userId = loginVO2.getUsername();
+			System.out.println("llllllllllkkllklklklklklklklklklklklklklklklklk" + userId);
+			List<TransactionVO>lista = transactionService.getAllTransactions(userId);
+			System.out.println("wowowowowowowowowowowowowowowowowowowowowowowowowowowoowowo" + lista.toString());
+
+			return "customer/accountStatement";
+		}else{
+			return "customer/login"; 
+		}
+	}
 
 	
 }
