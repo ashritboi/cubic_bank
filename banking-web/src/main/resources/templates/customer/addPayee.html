@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Login Page</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  
+</head>
+<body>
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+		<!-- Put the app logo here in navbar-brand -->
+		 Hello Mr.<span th:utext="${session.userSessionVO.username}" th:unless="${session == null}" style="font-weight: bold;"></span>
+		
+	
+	</nav>
+<div class="container">
+  <h2>Add Payee Page
+  </h2>
+  
+   <span th:utext="${error}" style="color: red;font-size: 18px;font-weight: bold;"></span>
+      <span th:utext="${message}" style="color: red;font-size: 18px;font-weight: bold;"></span>
+   <form th:action="@{/customer/savePayee}" method="POST" >
+  
+    <div class="form-group">
+      <label for="payeeAccountNo">PayeeAcc Number:</label>
+      <input type="text" style="width: 60%;" id="payeeAccountNo" name="payeeAccountNo" class="form-control" placeholder="Enter payee acc number">
+    </div>
+  
+    <div class="form-group">
+      <label for="payeeName">Payee Name:</label>
+      <input type="text" class="form-control" id="payeeName" name="payeeName"  placeholder="Enter payee name">
+    </div>
+    <div class="form-group">
+      <label for="payeeNickName">Payee Nick Name:</label>
+      <input type="text" style="width: 60%;" id="payeeNickName" name="payeeNickName"   class="form-control" placeholder="Enter payee nick name">
+    </div>
+    <div class="form-group">
+      <label for="remark">Remark</label>
+      <input type="text" style="width: 60%;" id="remarks" name="remarks"   class="form-control" placeholder="Enter remark">
+    </div>
+    
+     
+    <button type="submit" class="btn btn-primary">Add</button>
+    <a th:href="@{/customer/dashboard}"> 
+    <button type="button" class="btn btn-danger">DashBoard</button>
+    </a>
+  </form>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Login Page</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+  
+  function checkInp()
+  {
+  const regex = new RegExp(/[^0-9]/, 'g');
+  const x = document.forms["transfer"]["amount"].value;
+
+  if (x.match(regex) && x!= 0) {
+     alert("Amount Must be a valid number");
+     return;
+  }
+  }
+  </script>
+</head>
+<header style="height: 30px;background-color: maroon;color:white;">
+  Hello Mr. <span th:utext="${username}" style="font-weight: bold;"></span>
+   
+</header>
+<body>
+
+<div class="container">
+  <h2>Fund Transfer
+  </h2>
+  
+   <span th:utext="${error}" style="color: red;font-size: 18px;font-weight: bold;"></span>
+      <span th:utext="${message}" style="color: red;font-size: 18px;font-weight: bold;"></span>
+      
+   			<form onsubmit="return checkInp()" action="#" th:action="@{/customer/account/transferFund}" method="POST" name="transfer">
+  				      <input type="hidden" class="form-control" id="customerId"/>
+  					  <div class="form-group col-md-4">
+  					     Beneficiary Details:
+  					     
+  					   <select class="form-control" name="PayeeId" >
+  					   <option value="none" selected disabled hidden> Select Beneficiary </option> 
+  					   		<option th:each="beneficiary : ${beneficiariesList}" th:value="${beneficiary.id}" th:text="${beneficiary.payeeNickName}"></option>
+  					   </select>
+  					  </div>
+  					  <div class="form-group col-md-4">
+  					  	Amount to Transfer: <input type="text" class="form-control" name="amount" required="required"/>
+  					  </div>
+  					  <div class="form-group col-md-4">
+  					  	Description: <input type="text" class="form-control" name="description"/>
+  					  </div>	
+      
+    
+    <button type="submit" class="btn btn-primary">Confirm & Transfer</button>
+    
+        <button type="reset" class="btn btn-warning">reset</button>
+    
+    </form>
+    
+  </div>
+
+</body>
+</html>
