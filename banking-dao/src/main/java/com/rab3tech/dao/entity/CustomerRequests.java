@@ -33,13 +33,17 @@ public class CustomerRequests {
 	private Date doe;
 	private Date doa;
 	
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public long getId() {
 		return id;
 	}
 	public void setId(long id) {
 		this.id = id;
 	}
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "customerId", nullable = false)
 	public Login getCustomerId() {
 		return customerId;
 	}
@@ -52,12 +56,18 @@ public class CustomerRequests {
 	public void setReqRefNumber(String reqRefNumber) {
 		this.reqRefNumber = reqRefNumber;
 	}
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "addressId", nullable = false)
 	public Address getAddressId() {
 		return addressId;
 	}
 	public void setAddressId(Address addressId) {
 		this.addressId = addressId;
 	}
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "requestId", nullable = false)
 	public RequestType getRequestType() {
 		return requestType;
 	}
