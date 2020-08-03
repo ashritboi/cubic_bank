@@ -3,6 +3,7 @@ package com.rab3tech.customer.ui.controller;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.rab3tech.customer.service.AddressService;
+import com.rab3tech.customer.service.CustomerRequestService;
 import com.rab3tech.customer.service.CustomerService;
 import com.rab3tech.customer.service.LoginService;
 import com.rab3tech.customer.service.PayeeInfoService;
@@ -28,6 +31,7 @@ import com.rab3tech.customer.service.impl.SecurityQuestionService;
 import com.rab3tech.dao.entity.Customer;
 import com.rab3tech.dao.entity.PayeeInfo;
 import com.rab3tech.email.service.EmailService;
+import com.rab3tech.vo.AddressVO;
 import com.rab3tech.vo.ChangePasswordVO;
 import com.rab3tech.vo.CustomerAccountInfoVO;
 import com.rab3tech.vo.CustomerSaveAnswerVO;
@@ -37,6 +41,7 @@ import com.rab3tech.vo.CustomerVO;
 import com.rab3tech.vo.EmailVO;
 import com.rab3tech.vo.LoginVO;
 import com.rab3tech.vo.PayeeVO;
+import com.rab3tech.vo.RequestTypeVO;
 import com.rab3tech.vo.SecurityQuestionsVO;
 import com.rab3tech.vo.TransactionVO;
 
@@ -75,6 +80,12 @@ public class CustomerUIController {
 	
 	@Autowired
 	private TransactionService transactionService;
+	
+	@Autowired
+	   private AddressService addressService;
+	
+	@Autowired
+	private CustomerRequestService customerRequestService;
 	
 	@PostMapping("/customer/changePassword")
 	public String saveCustomerQuestions(@ModelAttribute ChangePasswordVO changePasswordVO, Model model,HttpSession session) {
@@ -327,14 +338,81 @@ public class CustomerUIController {
 		if(loginVO2 != null){
 			String userId = loginVO2.getUsername();
 			System.out.println("llllllllllkkllklklklklklklklklklklklklklklklklk" + userId);
-			List<TransactionVO>lista = transactionService.getAllTransactions(userId);
-			System.out.println("wowowowowowowowowowowowowowowowowowowowowowowowowowowoowowo" + lista.toString());
-
+			List<TransactionVO>list = transactionService.getAllTransactions(userId);
+			System.out.println("wowowowowowowowowowowowowowowowowowowowowowowowowowowoowowo  " + list.size());
+			model.addAttribute("list", list);
+			
 			return "customer/accountStatement";
 		}else{
 			return "customer/login"; 
 		}
 	}
 
+	
+	@PostMapping("/customer/account/saveAddress")
+	public String saveAddress(@ModelAttribute AddressVO addressVO, Model model, HttpSession session) {
+		LoginVO loginVO2 = (LoginVO)session.getAttribute("userSessionVO");
+		if(loginVO2 != null){
+			addressVO.setLogonId(loginVO2.getUsername()	);
+			String message = addressService.saveAddress(addressVO);			
+			model.addAttribute("message", message);
+			return "customer/requestEntry";
+		}else{
+			model.addAttribute("error", "Please Login to proceed Further");
+			return "customer/login"; 
+		}
+	}
+	
+	@GetMapping("/customer/account/addressEntry")
+	public String addressEntry( Model model, HttpSession session) {
+		LoginVO loginVO2 = (LoginVO)session.getAttribute("userSessionVO");
+		if(loginVO2 != null){
+			return "customer/address";
+		}else{
+			model.addAttribute("error", "Please Login to proceed Further");
+			return "customer/login"; 
+		}
+	}
+	
+	@GetMapping("/customer/account/requestEntry")
+	public String requestEntry( Model model, HttpSession session) {
+		LoginVO loginVO2 = (LoginVO)session.getAttribute("userSessionVO");
+		if(loginVO2 != null){
+			AddressVO address = addressService.getAddressByUserId(loginVO2.getUsername());
+			if(address.getAddressId()>0){
+				model.addAttribute("address", address);
+				List<RequestTypeVO> requestsType = customerRequestService.findAllRequests();
+				model.addAttribute("requestType", requestsType);
+				return "customer/requestEntry";
+			}else{
+				return "customer/address";
+			}
+		}else{
+			model.addAttribute("error", "Please Login to proceed Further");
+			return "customer/login"; 
+		}
+	}
+	
+	@GetMapping("/customer/account/raiseRequest")
+	public String raiseRequest(@RequestParam int requestType, Model model, HttpSession session) {
+		LoginVO loginVO2 = (LoginVO)session.getAttribute("userSessionVO");
+		if(loginVO2 != null){
+			RequestTypeVO requestsType = customerRequestService.findById(requestType);
+			if(requestsType.getStatus() == 1){
+				String page = "customer"+"/" + requestsType.getName().toLowerCase();
+				AddressVO address = addressService.getAddressByUserId(loginVO2.getUsername());
+				model.addAttribute("address", address);
+				return page;
+			}else{
+				List<RequestTypeVO> requestsType1 = customerRequestService.findAllRequests();
+				model.addAttribute("requestType", requestsType1);
+				return "customer/requestEntry";
+			}
+		}else{
+			model.addAttribute("error", "Please Login to proceed Further");
+			return "customer/login"; 
+		}
+	}
+	
 	
 }

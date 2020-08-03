@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import com.rab3tech.dao.entity.CustomerAccountInfo;
 import com.rab3tech.dao.entity.PayeeInfo;
 import com.rab3tech.dao.entity.Transaction;
 import com.rab3tech.vo.CustomerAccountInfoVO;
+import com.rab3tech.vo.PayeeVO;
 import com.rab3tech.vo.TransactionVO;
 
 @Service
@@ -115,6 +117,12 @@ public class TransactionServiceImpl implements TransactionService{
 		 	}else{
 		 		transactionVO.setTransactionType("Credit");
 		 	}
+		 	transactionVO.setAmount(transaction.getAmount());
+		 	transactionVO.setDescription(transaction.getDescription());
+		 	transactionVO.setTransactionDate(transaction.getTransactionDate());
+		 	PayeeVO payee = new PayeeVO();
+		 	BeanUtils.copyProperties(transaction.getPayeeId(), payee);
+		 	transactionVO.setPayee(payee);
 		 	transactions.add(transactionVO);
 		}
 		return transactions;

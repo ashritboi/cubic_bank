@@ -9,7 +9,8 @@ import org.springframework.data.repository.query.Param;
 import com.rab3tech.dao.entity.Transaction;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Integer>{
-	@Query("select t from transaction where t.debitAccountNumber = :accountNumber or t.payeeId.payeeAccountNo =:accountNumber order by t.transactionDate")
+	
+	@Query("select t from Transaction t where t.debitAccountNumber = :accountNumber or t.payeeId.payeeAccountNo =:accountNumber order by t.transactionDate desc")
 	List<Transaction> getAllTransactions(@Param("accountNumber")String accountNumber);
 
 }

@@ -99,5 +99,25 @@ public class LoginServiceImplTest {
 		Optional<LoginVO> loginVO2=loginServiceImpl.authUser(loginVO);
 		assertFalse(loginVO2.isPresent());
 	}
+	
+	@Test
+	public void testCheckPassword() {
+		
+		Login login=new Login();
+		
+		login.setLoginid("123");
+		login.setName("cool");
+		login.setPassword("1234");
+		
+		//when(bCryptPasswordEncoder.m);
+		
+		Optional<Login> login1=Optional.of(login);
+		when(loginRepository.findByLoginid("123")).thenReturn(login1);
+		
+		boolean result = loginServiceImpl.checkPasswordValid("123","1234");
+		
+		
+		assertEquals(true,result);
+	}
 
 }

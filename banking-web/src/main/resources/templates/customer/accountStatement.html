@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
     xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Manage Payee</title>
+  <title>Transaction History</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,7 +35,7 @@
    
 </header>
 <div class="container">
-  <h2>Payee List
+  <h2>Transaction History
   </h2>
   
 
@@ -47,24 +47,25 @@
     <table id="payeeList" class="table table-striped table-bordered" style="width:100%">
   <thead>
   <tr>
-  <td> Name </td>
-  <td> Payee Account No </td>
-  <td> Email </td>
-  <td> Nick Name </td>
-  <td> Date of Entry </td>
-  <td> Remarks </td>
+  <td> Beneficiary Name </td>
+  <td> Beneficiary Account No </td>
+  <td> Amount </td>
+  <td> Transaction Type </td>
+  <td> Description </td>
+  <td> Date  </td>
  
   </tr>
   </thead>
   <tbody>
   
-  <tr th:each="payee: ${payee}" class="panel panel-primary panel-table" th:id="'row_'+${payee.id}">
-  	<td th:text="${payee.payeeName}"/>
-  	<td th:text="${payee.payeeAccountNo}"/>
-  	<td th:text="${payee.customerId}"/>
-  	<td th:text="${payee.payeeNickName}"/>
-  	<td th:text="${payee.doe}"/>
-  	<td th:text="${payee.remarks}"/>
+  <tr th:each="list: ${list}" class="panel panel-primary panel-table" >
+  	<td th:text="${list.payee.payeeName}"/>
+  	<td th:text="${list.payee.payeeAccountNo}"/>
+  	<td th:text="${list.amount}"/>
+  	<td th:text="${list.transactionType}"/>
+  	<td th:text="${list.description}"/>
+  	<td th:text="${list.transactionDate}"/>
+  	
 
   	<td />
   	
