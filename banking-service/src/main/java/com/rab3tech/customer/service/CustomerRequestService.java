@@ -8,6 +8,7 @@ public interface CustomerRequestService {
 	
 	public List<RequestTypeVO> findAllRequests();
 	public RequestTypeVO findById(int requestId);
+	//String submitRquest(String email);
 	
 	
 

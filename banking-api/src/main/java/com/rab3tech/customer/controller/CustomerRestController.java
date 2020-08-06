@@ -12,7 +12,7 @@ import com.rab3tech.vo.CustomerVO;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/v3")
-public class CustomerController {
+public class CustomerRestController {
 	
 	
 

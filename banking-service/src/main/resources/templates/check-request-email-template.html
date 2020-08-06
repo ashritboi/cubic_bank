@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>CheckBook Request</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'/>
+
+    <!-- use the font -->
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 48px;
+        }
+    </style>
+</head>
+ <body>
+    <p th:text="${'Hello ' + name + '! '}"></p>
+     <hr/>  
+    <p>
+      You have successfully submitted your check book request on  <span th:text="${#dates.format(#dates.createNow(), 'dd MMM yyyy HH:mm')}"></span>
+    </p>
+    <p>
+       Our admin will review your request and get back to you shortly.
+    </p>   
+    
+    <p th:text="${'Address: ' + address }"></p>
+    
+      Regards, <br />
+      <em th:text="${sign}"></em>
+      <p th:text="${location}"></p>
+      <img th:src="|cid:bankIcon|" />
+  </body>
+</html>
